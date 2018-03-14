@@ -1,0 +1,13 @@
+language: python
+# make it explicit that we favor the new container-based travis workers
+sudo: false
+
+matrix:
+  include:
+    - python: "3.6"
+
+install:
+ - python -c "import multiprocessing; print(multiprocessing.cpu_count())"
+ - python -c "import os; print(len(os.sched_getaffinity(0)))"
+ - taskset -c -p $$
+ - cat /sys/fs/cgroup/cpu/cpu.cfs_quota_us

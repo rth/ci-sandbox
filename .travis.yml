@@ -2,12 +2,21 @@ language: python
 # make it explicit that we favor the new container-based travis workers
 sudo: false
 
+services:
+    - docker
+
 matrix:
   include:
     - python: "3.6"
 
 install:
- - python -c "import multiprocessing; print(multiprocessing.cpu_count())"
- - python -c "import os; print(len(os.sched_getaffinity(0)))"
- - taskset -c -p $$
- - cat /sys/fs/cgroup/cpu/cpu.cfs_quota_us
+ - docker build -t test-pyqt:latest .
+
+
+script:
+ - |
+     docker run --rm test-pyqt:latest \
+         /opt/conda/envs/qt594mpl222/bin/python -c "import PyQt5.Qt; import matplotlib.pyplot"
+ - |
+     docker run --rm -e LD_DEBUG=libs test-pyqt:latest \
+         /opt/conda/envs/qt594mpl222/bin/python -c "import PyQt5.Qt; import matplotlib.pyplot" 2>&1 | grep libgcc_s.so.1

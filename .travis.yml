@@ -30,3 +30,9 @@ script:
  - |
      docker run --rm test-pyqt:latest \
          find /usr/ -type f -name "*.so" -exec file "{}" \;
+ - |
+     docker run --rm test-pyqt:latest \
+         file -L /opt/conda/envs/qt594mpl222/lib/python3.6/site-packages/PyQt5/../../.././libgobject-2.0.so.0
+ - |
+     docker run --rm test-pyqt:latest \
+         find /opt/conda/envs/qt594mpl222/lib/ -type f -name "*.so" -exec file -L "{}" \;

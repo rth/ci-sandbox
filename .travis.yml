@@ -20,3 +20,10 @@ script:
  - |
      docker run --rm -e LD_DEBUG=libs test-pyqt:latest \
          /opt/conda/envs/qt594mpl222/bin/python -c "import PyQt5.Qt; import matplotlib.pyplot" 2>&1 | grep libgcc_s.so.1
+ - |
+     docker run --rm -e LD_DEBUG=libs test-pyqt:latest \
+         xvfb-run /opt/conda/envs/qt594mpl222/bin/python -c "import PyQt5.Qt; import matplotlib.pyplot"
+
+ - |
+     docker run --rm test-pyqt:latest \
+         file /usr/ -type f -name "*.so" -exec file "{}" \;
